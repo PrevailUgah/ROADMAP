@@ -171,9 +171,9 @@
                 <!-- Filters -->
                 <div class="flex gap-2 overflow-x-auto pb-2" id="filters">
                     <button data-filter="all" class="filter-btn active whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-slate-800 text-white shadow-sm transition-colors">All Tasks</button>
-                    <button data-filter="learning" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors">📚 Learning</button>
-                    <button data-filter="projects" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors">🛠️ Projects</button>
-                    <button data-filter="gigs" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 transition-colors">💰 Gigs</button>
+                    <button data-filter="learning" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">Learning</button>
+                    <button data-filter="projects" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">Projects</button>
+                    <button data-filter="gigs" class="filter-btn whitespace-nowrap px-4 py-2 rounded-full text-sm font-medium bg-white text-slate-600 border border-slate-200 hover:bg-slate-50">Gigs</button>
                 </div>
 
                 <!-- Dynamic Roadmap Container -->
@@ -193,13 +193,13 @@
                         <div class="space-y-5">
                             <div>
                                 <label class="block text-sm font-medium text-slate-700 mb-1">Start Date</label>
-                                <input type="date" id="start-date" class="w-full p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none text-slate-700">
+                                <input type="date" id="start-date" class="w-full p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 outline-none">
                             </div>
 
                             <div class="grid grid-cols-2 gap-4">
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Hours/Day</label>
-                                    <input type="number" id="hours-per-day" value="2" min="0.5" step="0.5" class="w-full p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none text-slate-700">
+                                    <input type="number" id="hours-per-day" value="2" min="0.5" step="0.5" class="w-full p-2.5 rounded-lg border border-slate-200 focus:ring-2 focus:ring-emerald-500 outline-none">
                                 </div>
                                 <div>
                                     <label class="block text-sm font-medium text-slate-700 mb-1">Days Off/Week</label>
@@ -234,40 +234,98 @@
             <!-- VIEW: ETHICS -->
             <section id="view-ethics" class="hidden space-y-6 fade-in">
                 <div class="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl p-8 text-white shadow-lg">
-                    <h2 class="text-3xl font-bold mb-4">The Builder's Pledge</h2>
+                    <h2 class="text-3xl font-bold mb-4">The Builder's Pledge: Security & Integrity</h2>
                     <p class="text-slate-300 text-lg leading-relaxed max-w-3xl">
-                        "I build to solve problems, not to create them. I use my skills to secure assets, verify identities, and facilitate trade. My code is my bond."
+                        "I build to solve problems, not to create them. I use my skills to secure assets, verify identities, and facilitate trade. My code is my bond." This commitment is the foundation of global trust and sustainable wealth.
                     </p>
                 </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="bg-white p-6 rounded-xl border border-red-100 shadow-sm relative overflow-hidden group">
-                        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-red-500">
-                            <svg width="100" height="100" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z"/></svg>
+                
+                <!-- RISK VS REWARD ANALYSIS -->
+                <div class="bg-white rounded-xl p-6 border border-slate-100">
+                    <h3 class="text-xl font-bold text-slate-800 mb-4 flex items-center gap-2">
+                        ⚖️ Risk vs. Reward: The Long-Term View
+                    </h3>
+                    <p class="text-slate-600 mb-4 text-sm">
+                        Fraud offers short-term gain but guarantees long-term failure. The Architect path offers delayed gratification but leads to exponential, legal, and global opportunities.
+                    </p>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                        <!-- Destructive -->
+                        <div class="p-4 rounded-lg bg-red-50 border border-red-200">
+                            <h4 class="font-bold text-red-700 mb-1">Destructive Path (Fraud/Scamming)</h4>
+                            <p class="text-2xl font-extrabold text-red-900 mb-2">~$500 max / month</p>
+                            <ul class="text-sm text-red-800 space-y-1">
+                                <li class="flex items-start gap-2"><span class="font-bold">Risk:</span> High (100% chance of exposure/failure over time, legal consequences).</li>
+                                <li class="flex items-start gap-2"><span class="font-bold">Earning Ceiling:</span> Zero (Reputation ruined, skills are obsolete, leads to poverty).</li>
+                                <li class="flex items-start gap-2"><span class="font-bold">Impact:</span> Harms Nigeria's global tech reputation and economy.</li>
+                            </ul>
                         </div>
-                        <h3 class="text-lg font-bold text-red-600 mb-2">The Fraud Mindset (Destructive)</h3>
-                        <ul class="space-y-3 text-slate-600 text-sm">
-                            <li class="flex gap-2"><span class="text-red-500">×</span> Short-term gain, long-term prison/pariah status.</li>
-                            <li class="flex gap-2"><span class="text-red-500">×</span> Destroys trust in Nigerian tech globally.</li>
-                            <li class="flex gap-2"><span class="text-red-500">×</span> Skills are limited to exploiting, not creating value.</li>
-                        </ul>
+                        
+                        <!-- Constructive -->
+                        <div class="p-4 rounded-lg bg-emerald-50 border border-emerald-200">
+                            <h4 class="font-bold text-emerald-700 mb-1">Architect Path (Legal Fintech Engineer)</h4>
+                            <p class="text-2xl font-extrabold text-emerald-900 mb-2">~$4,000+ / month (Remote)</p>
+                            <ul class="text-sm text-emerald-800 space-y-1">
+                                <li class="flex items-start gap-2"><span class="font-bold">Risk:</span> Low (Standard career challenges, steady employment).</li>
+                                <li class="flex items-start gap-2"><span class="font-bold">Earning Ceiling:</span> Unlimited (Global remote roles, startup equity, C-suite potential).</li>
+                                <li class="flex items-start gap-2"><span class="font-bold">Impact:</span> Builds Nigerian infrastructure and global trust.</li>
+                            </ul>
+                        </div>
+
+                        <!-- Visualization Placeholder -->
+                        <div class="p-4 rounded-lg bg-slate-50 flex items-center justify-center border border-slate-200">
+                            <span class="text-center text-slate-500 text-sm italic">
+                                
+                            </span>
+                        </div>
                     </div>
+                </div>
 
-                    <div class="bg-white p-6 rounded-xl border border-emerald-100 shadow-sm relative overflow-hidden group">
-                        <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity text-emerald-500">
-                            <svg width="100" height="100" fill="currentColor" viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm-2 16l-4-4 1.41-1.41L10 14.17l6.59-6.59L18 9l-8 8z"/></svg>
+                <!-- SCENARIO-BASED LEARNING -->
+                <div class="bg-white rounded-xl p-6 border border-slate-100">
+                    <h3 class="font-bold text-slate-800 mb-4 text-xl flex items-center gap-2">
+                        🛡️ The Choice Path: Architect vs. Exploiter
+                    </h3>
+
+                    <div class="space-y-6">
+                        <!-- Scenario 1: Identity Theft -->
+                        <div class="p-4 border-l-4 border-sky-500 bg-sky-50 rounded-r-lg">
+                            <h4 class="font-bold text-sky-800 mb-2">Scenario: User Login Credentials</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="font-bold text-red-600 block mb-1">Exploiter Action (Fraud Mindset)</span>
+                                    <p class="text-slate-700">**Action:** Sets up a fake login page (Phishing) to capture usernames and weak passwords (e.g., from old forum leaks).</p>
+                                    <p class="text-slate-500 mt-1">**Skill Used:** Basic HTML/CSS manipulation.</p>
+                                </div>
+                                <div>
+                                    <span class="font-bold text-emerald-600 block mb-1">Architect Solution (Builder Mindset)</span>
+                                    <p class="text-slate-700">**Action:** Implements **OAuth 2.0** and **bcrypt hashing** to ensure passwords are never stored in plaintext and unauthorized access is impossible.</p>
+                                    <p class="text-slate-500 mt-1">**Skill Used:** Phase 3 Security & Compliance.</p>
+                                </div>
+                            </div>
                         </div>
-                        <h3 class="text-lg font-bold text-emerald-600 mb-2">The Architect Mindset (Constructive)</h3>
-                        <ul class="space-y-3 text-slate-600 text-sm">
-                            <li class="flex gap-2"><span class="text-emerald-500">✓</span> Sustainable wealth through high-value skills.</li>
-                            <li class="flex gap-2"><span class="text-emerald-500">✓</span> Attracts global remote jobs ($$$).</li>
-                            <li class="flex gap-2"><span class="text-emerald-500">✓</span> You become a guardian of the digital economy.</li>
-                        </ul>
+
+                        <!-- Scenario 2: Transaction Fraud -->
+                        <div class="p-4 border-l-4 border-sky-500 bg-sky-50 rounded-r-lg">
+                            <h4 class="font-bold text-sky-800 mb-2">Scenario: Detecting Stolen Cards</h4>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                                <div>
+                                    <span class="font-bold text-red-600 block mb-1">Exploiter Action (Fraud Mindset)</span>
+                                    <p class="text-slate-700">**Action:** Uses automation scripts to test thousands of stolen credit card numbers against weak merchant payment gateways until one succeeds.</p>
+                                    <p class="text-slate-500 mt-1">**Skill Used:** Simple Python scripting (Automation).</p>
+                                </div>
+                                <div>
+                                    <span class="font-bold text-emerald-600 block mb-1">Architect Solution (Builder Mindset)</span>
+                                    <p class="text-slate-700">**Action:** Develops a **Machine Learning model** (Phase 4) that flags transactions based on velocity, location, and amount patterns, blocking the fraud attempt instantly.</p>
+                                    <p class="text-slate-500 mt-1">**Skill Used:** Phase 4 Data & AI.</p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
                 <div class="bg-white rounded-xl p-6 border border-slate-100">
-                    <h3 class="font-bold text-slate-800 mb-4">Skill-to-Security Mapping</h3>
+                    <h3 class="font-bold text-slate-800 mb-4">Skill-to-Security Mapping (Reinforced)</h3>
                     <div class="overflow-x-auto">
                         <table class="w-full text-sm text-left">
                             <thead class="text-xs text-slate-500 uppercase bg-slate-50">
@@ -312,4 +370,3 @@
 </body>
 
 </html>
-

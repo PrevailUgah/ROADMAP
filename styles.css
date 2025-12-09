@@ -1,0 +1,152 @@
+/* Custom Font Import */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Warm neutral light background */
+            color: #1e293b;
+        }
+
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        /* Chart Container Strict Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 300px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Interactive Elements */
+        .nav-item.active {
+            background-color: #e0f2fe; /* sky-100 */
+            color: #0284c7; /* sky-600 */
+            border-right: 3px solid #0284c7;
+        }
+
+        .phase-card {
+            transition: all 0.2s ease-in-out;
+        }
+        .phase-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Checkbox Styling */
+        .custom-checkbox {
+            appearance: none;
+            background-color: #fff;
+            margin: 0;
+            font: inherit;
+            color: currentColor;
+            width: 1.15em;
+            height: 1.15em;
+            border: 2px solid #cbd5e1;
+            border-radius: 0.25em;
+            display: grid;
+            place-content: center;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .custom-checkbox::before {
+            content: "";
+            width: 0.65em;
+            height: 0.65em;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 1em 1em white;
+            transform-origin: center;
+            clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+            background-color: #fff;
+        }
+
+        .custom-checkbox:checked {
+            background-color: #10b981; /* emerald-500 */
+            border-color: #10b981;
+        }
+
+        .custom-checkbox:checked::before {
+            transform: scale(1);
+        }
+
+                @media (max-width: 768px) { /* Adjust breakpoint as needed */
+    aside {
+        display: none; /* Collapsed by default */
+    }
+    body.sidebar-expanded aside { /* Or aside.is-expanded */
+        display: flex; /* Expanded */
+        position: fixed; /* To overlay content */
+        top: 0;
+        left: 0;
+        height: 100%;
+        width: 70%; /* Adjust width for mobile */
+        z-index: 30; /* Ensure it's above content */
+    }
+}
+
+/* Hide/slide sidebar for screens < lg (phones & tablets) when body has .sidebar-hidden */
+@media (max-width: 1023px) {
+  body.sidebar-hidden #sidebar {
+    transform: translateX(-100%);
+  }
+
+  /* when sidebar visible, prevent main content from being under it (optional) */
+  #sidebar {
+    will-change: transform;
+  }
+}
+/* small visual tweak for the toggle button on small screens */
+#sidebar-toggle { backdrop-filter: blur(4px); }
+/* Sidebar collapse/expand for mobile & tablet */
+@media (max-width: 768px) {
+  #sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+    width: 256px;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  body.sidebar-visible #sidebar {
+    transform: translateX(0);
+  }
+
+  body:not(.sidebar-visible) #sidebar {
+    transform: translateX(-100%);
+  }
+}
+
+@media (min-width: 769px) {
+  #sidebar {
+    position: static !important;
+    transform: translateX(0) !important;
+  }
+}
+
+#sidebar-toggle {
+  backdrop-filter: blur(4px);
+}

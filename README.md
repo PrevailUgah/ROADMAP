@@ -1,5 +1,6 @@
-# 🇳🇬 Naija Fintech Architect: Build. Secure. Earn.
 
+
+<div align="center"> <div style="background:#071028;border-radius:14px;padding:36px 44px;max-width:880px;box-shadow:0 18px 40px rgba(2,6,23,0.6);"> <h1 style="margin:0;font-family:Inter,Segoe UI,Helvetica,Arial,sans-serif;color:#00F0D1;font-size:42px;letter-spacing:-0.6px;"> ROADMAP </h1> <p style="margin:8px 0 20px;color:#B9DCEB;font-size:18px;max-width:760px;"> Fintech Architect: Build. Secure. Earn.</p> <a href="https://prevailugah.github.io/ROADMAP/" target="_blank" rel="noopener noreferrer" title="Open ROADMAP site" style="display:inline-block;padding:12px 20px;background:linear-gradient(90deg,#0a5f28,#2e8b57,#0a5f28);color:#ffffff;font-weight:800;border-radius:6px;text-decoration:none!important;box-shadow:0 6px 18px rgba(0,0,0,0.35), inset 0 -3px 0 rgba(0,0,0,0.08);font-size:18px;border:3px solid #0b6d2b;"> Visit site</a> </div> </div>
 ---
 
 ## 📊 Project Status

@@ -1,0 +1,124 @@
+
+# ✅ **Beginner‑Friendly Guide: Real‑Time Fraud Monitoring System (Lightweight Version)**  
+*A simplified overview for new developers, analysts, and future contributors.*
+
+---
+
+# **1. What This System Does (In Plain English)**
+
+This system watches every transaction in real time and decides:
+
+- Should we **allow** it?  
+- Should we **review** it?  
+- Should we **block** it?  
+
+It does this by combining:
+
+✅ Basic transaction data  
+✅ Historical behavior (features)  
+✅ Fraud rules  
+✅ AI‑generated suggestions  
+
+Think of it as a **fraud firewall** that gets smarter over time.
+
+---
+
+# **2. The Core Database Tables (Simple Overview)**
+
+These are the main “buckets” of information the system uses.
+
+### ✅ **Users**
+People who use the system (analysts, admins).
+
+### ✅ **Accounts**
+Customer accounts being monitored.
+
+### ✅ **Merchants**
+Where the customer is spending money.
+
+### ✅ **Devices**
+The device fingerprints used for transactions.
+
+### ✅ **Transactions**
+Every payment attempt.  
+This is the heart of the system.
+
+### ✅ **Rules**
+Human‑written fraud rules.  
+Example: “If amount > 500,000 AND device is new → add 40 risk points.”
+
+### ✅ **Features**
+Aggregated behavior like:
+
+- Number of transactions in the last 1 hour  
+- Total amount in the last 24 hours  
+
+These help detect unusual patterns.
+
+### ✅ **Rule Evaluations**
+A log of which rules fired for each transaction.
+
+### ✅ **Alerts**
+Cases created when a transaction looks suspicious.
+
+### ✅ **AI Proposals**
+Rule ideas suggested by the AI.
+
+---
+
+# **3. How Rules Work (Simple Format)**
+
+Rules follow a very simple structure:
+
+```
+IF field operator value THEN add score
+```
+
+Examples:
+
+- IF amount > 500000  
+- IF features.24h.txn_count > 20  
+- IF currency == "USD"  
+
+This makes rules easy to write, read, and upgrade later.
+
+---
+
+# **4. How the AI Helps (Beginner Version)**
+
+The AI looks at a transaction and suggests:
+
+- A rule name  
+- A severity level  
+- A score to add  
+- A simple condition (field, operator, value)  
+- A short explanation  
+
+Humans still approve or reject the rule.  
+The AI never acts alone.
+
+---
+
+# **5. What Happens When a Transaction Arrives**
+
+Here’s the flow in simple steps:
+
+### ✅ **1. Validate**
+Check if the transaction has the required fields.
+
+### ✅ **2. Enrich**
+Fetch account info and recent features.
+
+### ✅ **3. Evaluate Rules**
+Go through all active rules and add up risk points.
+
+### ✅ **4. Make a Decision**
+- **Risk < 60 → Allow**  
+- **60–84 → Review**  
+- **≥ 85 → Block**
+
+### ✅ **5. Trigger Background Tasks**
+- Recompute features  
+- Ask AI to suggest new rules (only for review/block)
+
+This keeps the real‑time path fast.

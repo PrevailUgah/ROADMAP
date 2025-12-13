@@ -1,0 +1,2193 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Fraud Tracker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      --bg: #020617;
+      --bg-alt: #020617;
+      --panel: #020617;
+      --border: #1f2937;
+      --accent: #6366f1;
+      --accent-soft: rgba(99, 102, 241, 0.16);
+      --accent-bright: #a5b4fc;
+      --text: #e5e7eb;
+      --text-soft: #9ca3af;
+      --danger: #f97373;
+      --warning: #fbbf24;
+      --success: #22c55e;
+      --chip-bg: #020617;
+      --radius: 12px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    body {
+      background: radial-gradient(circle at top, #111827 0, #020617 55%);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    .app-shell {
+      display: flex;
+      width: 100%;
+      min-height: 100vh;
+    }
+
+    /* Sidebar */
+    .sidebar {
+      width: 260px;
+      background: rgba(15, 23, 42, 0.98);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      padding: 18px 16px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .logo-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      background:
+        radial-gradient(circle at 20% 0, #38bdf8 0, transparent 55%),
+        radial-gradient(circle at 80% 110%, #22c55e 0, transparent 55%),
+        radial-gradient(circle at 50% 50%, #6366f1 0, #020617 60%);
+      box-shadow: 0 0 20px rgba(79, 70, 229, 0.7);
+    }
+
+    .logo-text {
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      font-size: 15px;
+      text-transform: uppercase;
+    }
+
+    .logo-sub {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .env-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.9);
+      margin-bottom: 10px;
+    }
+
+    .env-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 9px rgba(34, 197, 94, 0.9);
+    }
+
+    .nav-section-title {
+      margin: 16px 0 6px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--text-soft);
+    }
+
+    .nav {
+      list-style: none;
+    }
+
+    .nav-item {
+      margin-bottom: 4px;
+    }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text-soft);
+      cursor: pointer;
+      text-decoration: none;
+      transition:
+        background 0.14s ease,
+        color 0.14s ease,
+        transform 0.08s ease,
+        box-shadow 0.12s ease;
+    }
+
+    .nav-link span.icon {
+      width: 18px;
+      text-align: center;
+      font-size: 14px;
+      opacity: 0.9;
+    }
+
+    .nav-link.active {
+      background:
+        radial-gradient(circle at top left, rgba(96, 165, 250, 0.25), transparent 60%),
+        linear-gradient(to right, var(--accent-soft), transparent);
+      color: #e5e7eb;
+      box-shadow:
+        inset 0 0 0 1px rgba(129, 140, 248, 0.4),
+        0 10px 30px rgba(15, 23, 42, 0.8);
+    }
+
+    .nav-link:hover {
+      background: rgba(31, 41, 55, 0.95);
+      color: #e5e7eb;
+      transform: translateY(-1px);
+    }
+
+    .sidebar-footer {
+      margin-top: auto;
+      font-size: 11px;
+      color: var(--text-soft);
+      border-top: 1px solid var(--border);
+      padding-top: 10px;
+    }
+
+    /* Main */
+    .main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 14px 18px;
+      gap: 12px;
+      max-width: calc(100vw - 260px);
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .breadcrumbs {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .breadcrumbs span {
+      color: var(--accent-bright);
+    }
+
+    .page-title {
+      font-size: 20px;
+      font-weight: 600;
+      margin-top: 3px;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: flex-end;
+    }
+
+    .pill {
+      font-size: 11px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.9);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: var(--text-soft);
+    }
+
+    .pill strong {
+      font-weight: 500;
+      color: var(--accent-bright);
+    }
+
+    .user-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 9px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.95);
+    }
+
+    .user-avatar {
+      width: 26px;
+      height: 26px;
+      border-radius: 999px;
+      background: linear-gradient(135deg, #22c55e, #0ea5e9);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .user-info {
+      display: flex;
+      flex-direction: column;
+      font-size: 11px;
+    }
+
+    .user-info-name {
+      color: #e5e7eb;
+    }
+
+    .user-info-role {
+      color: var(--text-soft);
+    }
+
+    /* Layout helpers */
+    .grid {
+      display: grid;
+      gap: 10px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid-main-sidebar {
+      grid-template-columns: minmax(0, 2.1fr) minmax(0, 1.3fr);
+      gap: 12px;
+    }
+
+    @media (max-width: 1150px) {
+      .grid-3 {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .grid-main-sidebar {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        max-width: 100vw;
+      }
+    }
+
+    @media (max-width: 760px) {
+      .grid-3,
+      .grid-2 {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
+    /* Cards / panels */
+    .card {
+      background:
+        radial-gradient(circle at top left, rgba(56, 189, 248, 0.22), transparent 60%),
+        radial-gradient(circle at bottom right, rgba(30, 64, 175, 0.6), rgba(15, 23, 42, 0.98) 70%);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      border: 1px solid rgba(31, 41, 55, 0.95);
+      box-shadow:
+        0 16px 40px rgba(0, 0, 0, 0.8),
+        inset 0 0 0 1px rgba(15, 23, 42, 0.4);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::after {
+      content: "";
+      position: absolute;
+      inset: -30%;
+      background: radial-gradient(circle at top, rgba(148, 163, 184, 0.12), transparent 58%);
+      opacity: 0.6;
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+    }
+
+    .card > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 6px;
+    }
+
+    .card-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .card-subtitle {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .badge {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .badge--success {
+      border-color: rgba(34, 197, 94, 0.5);
+      color: #bbf7d0;
+      background: rgba(22, 163, 74, 0.18);
+    }
+
+    .badge--danger {
+      border-color: rgba(248, 113, 113, 0.5);
+      color: #fecaca;
+      background: rgba(239, 68, 68, 0.18);
+    }
+
+    .badge--warning {
+      border-color: rgba(250, 204, 21, 0.6);
+      color: #fef3c7;
+      background: rgba(250, 204, 21, 0.15);
+    }
+
+    .badge--ai {
+      border-color: rgba(168, 85, 247, 0.6);
+      color: #f5d0fe;
+      background: rgba(91, 33, 182, 0.25);
+    }
+
+    .metric-main {
+      font-size: 22px;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+
+    .metric-meta {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .trend {
+      font-size: 11px;
+      color: var(--success);
+    }
+
+    .trend.danger {
+      color: var(--danger);
+    }
+
+    /* Table */
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11px;
+      margin-top: 4px;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    thead {
+      background: rgba(15, 23, 42, 0.98);
+    }
+
+    th,
+    td {
+      padding: 6px 6px;
+      text-align: left;
+      border-bottom: 1px solid rgba(31, 41, 55, 0.9);
+      white-space: nowrap;
+    }
+
+    th {
+      font-weight: 500;
+      color: var(--text-soft);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    tbody tr:hover {
+      background: rgba(55, 65, 81, 0.32);
+      cursor: pointer;
+    }
+
+    .status-pill {
+      padding: 2px 7px;
+      border-radius: 999px;
+      font-size: 10px;
+      border: 1px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .status-pill.review {
+      background: rgba(252, 211, 77, 0.16);
+      color: #fef3c7;
+      border-color: rgba(252, 211, 77, 0.5);
+    }
+
+    .status-pill.block {
+      background: rgba(248, 113, 113, 0.18);
+      color: #fecaca;
+      border-color: rgba(248, 113, 113, 0.6);
+    }
+
+    .status-pill.allow {
+      background: rgba(34, 197, 94, 0.18);
+      color: #bbf7d0;
+      border-color: rgba(22, 163, 74, 0.5);
+    }
+
+    .tag {
+      font-size: 10px;
+      padding: 3px 6px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
+    .tag.severity-high {
+      border-color: rgba(248, 113, 113, 0.7);
+      color: #fecaca;
+    }
+
+    .tag.severity-medium {
+      border-color: rgba(250, 204, 21, 0.7);
+      color: #fef3c7;
+    }
+
+    .tag.severity-low {
+      border-color: rgba(59, 130, 246, 0.7);
+      color: #bfdbfe;
+    }
+
+    /* Filters */
+    .filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .filter-control {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      min-width: 120px;
+    }
+
+    .filter-label {
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .filter-input,
+    .filter-select,
+    .filter-range {
+      background: rgba(15, 23, 42, 0.95);
+      border-radius: 999px;
+      padding: 4px 8px;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 11px;
+      outline: none;
+    }
+
+    .filter-input::placeholder {
+      color: #6b7280;
+    }
+
+    .btn {
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      padding: 5px 10px;
+      font-size: 11px;
+      background: rgba(15, 23, 42, 0.96);
+      color: var(--text-soft);
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition:
+        background 0.15s ease,
+        transform 0.06s ease,
+        border-color 0.15s ease,
+        box-shadow 0.15s ease;
+      white-space: nowrap;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1, #22c55e);
+      border-color: rgba(191, 219, 254, 0.4);
+      color: #f9fafb;
+      box-shadow:
+        0 10px 25px rgba(15, 23, 42, 0.9),
+        0 0 16px rgba(59, 130, 246, 0.7);
+    }
+
+    .btn-ghost {
+      background: transparent;
+    }
+
+    .btn-danger {
+      background: rgba(248, 113, 113, 0.15);
+      border-color: rgba(248, 113, 113, 0.7);
+      color: #fecaca;
+    }
+
+    .btn:hover {
+      transform: translateY(-1px);
+      background: rgba(31, 41, 55, 0.95);
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.85);
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #818cf8, #22c55e);
+    }
+
+    .btn-danger:hover {
+      background: rgba(248, 113, 113, 0.22);
+    }
+
+    .section {
+      display: none;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .section.active {
+      display: flex;
+    }
+
+    .section-header-line {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: -2px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .section-title {
+      font-size: 15px;
+      font-weight: 550;
+    }
+
+    .section-subtitle {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    /* Detail panels */
+    .detail-panel {
+      background:
+        radial-gradient(circle at top left, rgba(96, 165, 250, 0.2), transparent 65%),
+        radial-gradient(circle at bottom right, rgba(15, 23, 42, 0.98), rgba(2, 6, 23, 1) 80%);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+      border: 1px solid rgba(31, 41, 55, 0.9);
+      box-shadow:
+        0 18px 45px rgba(0, 0, 0, 0.9),
+        inset 0 0 0 1px rgba(15, 23, 42, 0.5);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .detail-panel::after {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at top, rgba(148, 163, 184, 0.16), transparent 60%);
+      opacity: 0.7;
+      pointer-events: none;
+      mix-blend-mode: soft-light;
+    }
+
+    .detail-panel > * {
+      position: relative;
+      z-index: 1;
+    }
+
+    .detail-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 6px;
+      gap: 8px;
+    }
+
+    .detail-title {
+      font-size: 13px;
+      font-weight: 500;
+    }
+
+    .detail-meta {
+      font-size: 11px;
+      color: var(--text-soft);
+    }
+
+    .detail-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 6px;
+      font-size: 11px;
+    }
+
+    @media (max-width: 840px) {
+      .detail-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .detail-item-label {
+      font-size: 10px;
+      color: var(--text-soft);
+    }
+
+    .detail-item-value {
+      font-size: 11px;
+    }
+
+    /* JSON viewer */
+    .json-viewer {
+      background: rgba(15, 23, 42, 0.98);
+      border-radius: 8px;
+      padding: 8px;
+      border: 1px solid var(--border);
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 11px;
+      max-height: 180px;
+      overflow: auto;
+      color: #e5e7eb;
+      margin-top: 4px;
+    }
+
+    .json-key {
+      color: #93c5fd;
+    }
+
+    .json-string {
+      color: #6ee7b7;
+    }
+
+    .json-number {
+      color: #fde68a;
+    }
+
+    .json-boolean {
+      color: #fca5a5;
+    }
+
+    .json-null {
+      color: #9ca3af;
+    }
+
+    .rule-condition {
+      font-size: 11px;
+      padding: 6px 8px;
+      border-radius: 8px;
+      background: rgba(15, 23, 42, 0.96);
+      border: 1px dashed rgba(148, 163, 184, 0.7);
+      margin-top: 4px;
+    }
+
+    .rule-condition span.field {
+      color: #a5b4fc;
+    }
+
+    .rule-condition span.op {
+      color: #facc15;
+    }
+
+    .rule-condition span.value {
+      color: #6ee7b7;
+    }
+
+    .chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-top: 4px;
+    }
+
+    .chip {
+      font-size: 10px;
+      padding: 3px 7px;
+      border-radius: 999px;
+      background: var(--chip-bg);
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .chip-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+    }
+
+    .muted {
+      color: var(--text-soft);
+      font-size: 11px;
+    }
+
+    .divider {
+      height: 1px;
+      border-radius: 999px;
+      background: linear-gradient(to right, transparent, rgba(148, 163, 184, 0.65), transparent);
+      margin: 6px 0 7px;
+      opacity: 0.9;
+    }
+
+    .tiny-label {
+      font-size: 9px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--text-soft);
+    }
+
+    .severity-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      display: inline-block;
+      margin-right: 4px;
+    }
+
+    .severity-dot.high {
+      background: #f97373;
+    }
+
+    .severity-dot.medium {
+      background: #fbbf24;
+    }
+
+    .severity-dot.low {
+      background: #22c55e;
+    }
+
+    .badge-confidence {
+      border-color: rgba(129, 140, 248, 0.8);
+      color: #e0e7ff;
+      background: rgba(55, 48, 163, 0.4);
+    }
+
+    .pagination {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 4px;
+      margin-top: 4px;
+      font-size: 11px;
+    }
+
+    .pagination-btn {
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(15, 23, 42, 0.95);
+      cursor: pointer;
+    }
+
+    .pagination-btn.disabled {
+      opacity: 0.4;
+      cursor: default;
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-mark"></div>
+        <div>
+          <div class="logo-text">Bank Fraud Tracker</div>
+          <div class="logo-sub">Fraud Command Center</div>
+        </div>
+      </div>
+
+      <div class="env-pill">
+        <span class="env-dot"></span>
+        <span>Xano · Real-time mode</span>
+      </div>
+
+      <div class="nav-section-title">Overview</div>
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link active" data-section="dashboard">
+            <span class="icon">📊</span>
+            <span>Dashboard</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-section="transactions">
+            <span class="icon">💳</span>
+            <span>Transactions</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-section="alerts">
+            <span class="icon">🚨</span>
+            <span>Alerts</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="nav-section-title">Decisioning</div>
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" data-section="rules">
+            <span class="icon">⚙️</span>
+            <span>Rules</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-section="ai-proposals">
+            <span class="icon">🤖</span>
+            <span>AI Proposals</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="nav-section-title">Entities</div>
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" data-section="accounts">
+            <span class="icon">👤</span>
+            <span>Accounts</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-section="merchants">
+            <span class="icon">🏬</span>
+            <span>Merchants</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-section="devices">
+            <span class="icon">📱</span>
+            <span>Devices</span>
+          </a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" data-section="users">
+            <span class="icon">🧑</span>
+            <span>Users</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="nav-section-title">System</div>
+      <ul class="nav">
+        <li class="nav-item">
+          <a class="nav-link" data-section="settings">
+            <span class="icon">⚙️</span>
+            <span>Settings</span>
+          </a>
+        </li>
+      </ul>
+
+      <div class="sidebar-footer">
+        <div>Fraud monitoring console shell.</div>
+        <div class="muted">Wire these views to Xano APIs later.</div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <div class="breadcrumbs">
+            <span id="breadcrumbs-root">Dashboard</span>
+          </div>
+          <div class="page-title" id="page-title">Overview</div>
+        </div>
+        <div class="topbar-right">
+          <div class="pill">
+            <span>Latency:</span>
+            <strong>&lt; 80ms</strong>
+          </div>
+          <div class="pill">
+            <span>Thresholds:</span>
+            <strong>&lt;60 allow · 60–84 review · ≥85 block</strong>
+          </div>
+          <div class="user-wrapper">
+            <div class="user-avatar">PA</div>
+            <div class="user-info">
+              <span class="user-info-name">Prevail Ugah.</span>
+              <span class="user-info-role">Senior Fraud Analyst</span>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- DASHBOARD -->
+      <section class="section active" id="section-dashboard">
+        <div class="grid grid-3">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Real-time throughput</div>
+                <div class="card-subtitle">Transactions per minute</div>
+              </div>
+              <span class="badge badge--success">Healthy</span>
+            </div>
+            <div class="metric-main">3,482 TPM</div>
+            <div class="metric-meta">
+              <span class="trend">+12.4% vs last 5 min</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Risk score distribution</div>
+                <div class="card-subtitle">Last 15 minutes</div>
+              </div>
+              <span class="badge">Buckets</span>
+            </div>
+            <div class="chips">
+              <div class="chip">
+                <span class="chip-dot"></span>&lt; 60 · 87.1%
+              </div>
+              <div class="chip">
+                <span class="chip-dot" style="background:#fbbf24;"></span>60–84 · 10.3%
+              </div>
+              <div class="chip">
+                <span class="chip-dot" style="background:#f97373;"></span>≥ 85 · 2.6%
+              </div>
+            </div>
+            <div class="metric-meta" style="margin-top:4px;">
+              Use this to tune thresholds and automation.
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Alerts by severity</div>
+                <div class="card-subtitle">Open cases</div>
+              </div>
+              <span class="badge badge--danger">Triage</span>
+            </div>
+            <div class="detail-grid">
+              <div>
+                <div class="detail-item-label">Critical</div>
+                <div class="detail-item-value">
+                  <span class="severity-dot high"></span> 9 open
+                </div>
+              </div>
+              <div>
+                <div class="detail-item-label">High</div>
+                <div class="detail-item-value">
+                  <span class="severity-dot high"></span> 28 open
+                </div>
+              </div>
+              <div>
+                <div class="detail-item-label">Medium</div>
+                <div class="detail-item-value">
+                  <span class="severity-dot medium"></span> 63 open
+                </div>
+              </div>
+              <div>
+                <div class="detail-item-label">Low</div>
+                <div class="detail-item-value">
+                  <span class="severity-dot low"></span> 112 open
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-main-sidebar">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Live stream</div>
+                <div class="card-subtitle">Last 20 decisions</div>
+              </div>
+              <span class="badge">Hot path</span>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Txn ID</th>
+                    <th>Account</th>
+                    <th>Amount</th>
+                    <th>Channel</th>
+                    <th>Risk</th>
+                    <th>Decision</th>
+                    <th>When</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>#982341</td>
+                    <td>CUST-8842</td>
+                    <td>$1,200.00</td>
+                    <td>CNP</td>
+                    <td>92</td>
+                    <td><span class="status-pill block">Block</span></td>
+                    <td>3s ago</td>
+                  </tr>
+                  <tr>
+                    <td>#982340</td>
+                    <td>CUST-4311</td>
+                    <td>$48.25</td>
+                    <td>POS</td>
+                    <td>41</td>
+                    <td><span class="status-pill allow">Allow</span></td>
+                    <td>8s ago</td>
+                  </tr>
+                  <tr>
+                    <td>#982339</td>
+                    <td>CUST-7720</td>
+                    <td>$2,950.00</td>
+                    <td>Online</td>
+                    <td>71</td>
+                    <td><span class="status-pill review">Review</span></td>
+                    <td>14s ago</td>
+                  </tr>
+                  <tr>
+                    <td>#982338</td>
+                    <td>CUST-1509</td>
+                    <td>$8.99</td>
+                    <td>In-app</td>
+                    <td>24</td>
+                    <td><span class="status-pill allow">Allow</span></td>
+                    <td>25s ago</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <div class="detail-title">Velocity windows</div>
+                <div class="detail-meta">Example from Features table</div>
+              </div>
+              <span class="badge">Aggregates</span>
+            </div>
+            <div class="detail-grid">
+              <div>
+                <div class="detail-item-label">Last 1h txn count</div>
+                <div class="detail-item-value">17</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Last 1h total amount</div>
+                <div class="detail-item-value">$14,230.00</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Last 24h txn count</div>
+                <div class="detail-item-value">96</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Last 24h total amount</div>
+                <div class="detail-item-value">$84,910.00</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="tiny-label">Example rule</div>
+            <div class="rule-condition">
+              IF <span class="field">amount</span>
+              <span class="op">&gt;</span>
+              <span class="value">500000</span>
+              AND
+              <span class="field">features.24h.txn_count</span>
+              <span class="op">&gt;</span>
+              <span class="value">20</span>
+            </div>
+            <p class="muted" style="margin-top:4px;">
+              This is how your Features table supports velocity-based rules.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- TRANSACTIONS -->
+      <section class="section" id="section-transactions">
+        <div class="section-header-line">
+          <div>
+            <div class="section-title">Transactions</div>
+            <div class="section-subtitle">
+              Inspect live and historical transactions, risk scores, and rule evaluations.
+            </div>
+          </div>
+          <div style="display:flex; gap:6px; flex-wrap:wrap;">
+            <button class="btn btn-ghost">Export CSV</button>
+            <button class="btn btn-primary">Ingest test transaction</button>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <div class="card-title">Filters</div>
+              <div class="card-subtitle">Time, value, channel, decision, and risk score.</div>
+            </div>
+          </div>
+          <div class="filters">
+            <div class="filter-control">
+              <label class="filter-label">Date range</label>
+              <input class="filter-input" placeholder="Last 24 hours" />
+            </div>
+            <div class="filter-control">
+              <label class="filter-label">Amount (min)</label>
+              <input class="filter-input" placeholder="0" />
+            </div>
+            <div class="filter-control">
+              <label class="filter-label">Amount (max)</label>
+              <input class="filter-input" placeholder="500000" />
+            </div>
+            <div class="filter-control">
+              <label class="filter-label">Channel</label>
+              <select class="filter-select">
+                <option>Any</option>
+                <option>Online</option>
+                <option>POS</option>
+                <option>Card-not-present</option>
+                <option>In-app</option>
+              </select>
+            </div>
+            <div class="filter-control">
+              <label class="filter-label">Decision</label>
+              <select class="filter-select">
+                <option>Any</option>
+                <option>Allow</option>
+                <option>Review</option>
+                <option>Block</option>
+              </select>
+            </div>
+            <div class="filter-control">
+              <label class="filter-label">Risk ≥</label>
+              <input class="filter-input" placeholder="0" />
+            </div>
+            <div style="align-self:flex-end; display:flex; gap:6px;">
+              <button class="btn btn-ghost">Reset</button>
+              <button class="btn btn-primary">Apply</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-main-sidebar">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Transactions list</div>
+                <div class="card-subtitle">Backed by the Transactions table in Xano.</div>
+              </div>
+              <span class="badge">Paginated</span>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Account</th>
+                    <th>Merchant</th>
+                    <th>Amount</th>
+                    <th>Channel</th>
+                    <th>Risk</th>
+                    <th>Decision</th>
+                    <th>Timestamp</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>#982341</td>
+                    <td>CUST-8842</td>
+                    <td>FOODPANDA-NG</td>
+                    <td>$1,200.00</td>
+                    <td>CNP</td>
+                    <td>92</td>
+                    <td><span class="status-pill block">Block</span></td>
+                    <td>2025-12-12 21:31:22</td>
+                  </tr>
+                  <tr>
+                    <td>#982339</td>
+                    <td>CUST-7720</td>
+                    <td>UBER-NG</td>
+                    <td>$2,950.00</td>
+                    <td>Online</td>
+                    <td>71</td>
+                    <td><span class="status-pill review">Review</span></td>
+                    <td>2025-12-12 21:30:14</td>
+                  </tr>
+                  <tr>
+                    <td>#982332</td>
+                    <td>CUST-4311</td>
+                    <td>SPAR-ABJ</td>
+                    <td>$48.25</td>
+                    <td>POS</td>
+                    <td>41</td>
+                    <td><span class="status-pill allow">Allow</span></td>
+                    <td>2025-12-12 21:28:09</td>
+                  </tr>
+                  <tr>
+                    <td>#982328</td>
+                    <td>CUST-1509</td>
+                    <td>APPLE.COM/BILL</td>
+                    <td>$8.99</td>
+                    <td>In-app</td>
+                    <td>24</td>
+                    <td><span class="status-pill allow">Allow</span></td>
+                    <td>2025-12-12 21:27:49</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="pagination">
+              <span>Page 1 of 48</span>
+              <button class="pagination-btn disabled">&laquo;</button>
+              <button class="pagination-btn">&raquo;</button>
+            </div>
+          </div>
+
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <div class="detail-title">Transaction detail</div>
+                <div class="detail-meta">
+                  Combines Accounts, Merchants, Devices, Features, and Rule_evaluations.
+                </div>
+              </div>
+              <span class="badge badge--danger">Risk 92 · Block</span>
+            </div>
+
+            <div class="detail-grid">
+              <div>
+                <div class="detail-item-label">Transaction ID</div>
+                <div class="detail-item-value">#982341</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Account</div>
+                <div class="detail-item-value">CUST-8842 (High tier)</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Merchant</div>
+                <div class="detail-item-value">FOODPANDA-NG (MCC 5812)</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Device</div>
+                <div class="detail-item-value">device_hash_9af0...d2</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Channel</div>
+                <div class="detail-item-value">Card-not-present</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Amount</div>
+                <div class="detail-item-value">$1,200.00 · NGN equivalent</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="tiny-label">Rule evaluations</div>
+            <div class="chips">
+              <div class="chip">
+                Large CNP at night · +40
+              </div>
+              <div class="chip">
+                24h velocity &gt; 20 · +35
+              </div>
+              <div class="chip">
+                New device &lt; 1h · +17
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="tiny-label">Features snapshot</div>
+            <p class="muted">
+              Last 1h: 17 txns · $14,230 — Last 24h: 96 txns · $84,910.
+            </p>
+
+            <div class="divider"></div>
+            <div class="tiny-label">Raw metadata_json</div>
+            <div class="json-viewer">
+              <span class="json-key">{"ip_address"</span>: <span class="json-string">"197.210.45.18"</span>,
+              <span class="json-key">"geo_country"</span>: <span class="json-string">"NG"</span>,
+              <span class="json-key">"device_fingerprint"</span>: <span class="json-string">"device_hash_9af0e..."</span>,
+              <span class="json-key">"user_agent"</span>: <span class="json-string">"Mozilla/5.0 (Windows 10)"</span>,
+              <span class="json-key">"attempt"</span>: <span class="json-number">3</span>,
+              <span class="json-key">"previous_declines"</span>: <span class="json-number">2</span>
+              }
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ALERTS -->
+      <section class="section" id="section-alerts">
+        <div class="section-header-line">
+          <div>
+            <div class="section-title">Alerts & Case Management</div>
+            <div class="section-subtitle">
+              Alerts are created when transactions exceed risk thresholds or match critical rules.
+            </div>
+          </div>
+          <button class="btn btn-primary">New manual case</button>
+        </div>
+
+        <div class="grid grid-main-sidebar">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Alert queue</div>
+                <div class="card-subtitle">
+                  Data from the Alerts table (linked to Transactions and Users).
+                </div>
+              </div>
+              <span class="badge badge--danger">Critical triage</span>
+            </div>
+
+            <div class="filters">
+              <div class="filter-control">
+                <label class="filter-label">Severity</label>
+                <select class="filter-select">
+                  <option>Any</option>
+                  <option>Critical</option>
+                  <option>High</option>
+                  <option>Medium</option>
+                  <option>Low</option>
+                </select>
+              </div>
+              <div class="filter-control">
+                <label class="filter-label">Status</label>
+                <select class="filter-select">
+                  <option>Open</option>
+                  <option>In review</option>
+                  <option>Resolved</option>
+                </select>
+              </div>
+              <div class="filter-control">
+                <label class="filter-label">Assignee</label>
+                <select class="filter-select">
+                  <option>Any</option>
+                  <option>Unassigned</option>
+                  <option>Prevail A.</option>
+                  <option>Analyst team</option>
+                </select>
+              </div>
+              <div style="align-self:flex-end;">
+                <button class="btn btn-ghost">Clear</button>
+                <button class="btn btn-primary">Filter</button>
+              </div>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Alert ID</th>
+                    <th>Txn ID</th>
+                    <th>Risk</th>
+                    <th>Category</th>
+                    <th>Status</th>
+                    <th>Assignee</th>
+                    <th>Created</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>AL-00982</td>
+                    <td>#982341</td>
+                    <td>92</td>
+                    <td>Velocity spike</td>
+                    <td><span class="status-pill block">Open</span></td>
+                    <td>Unassigned</td>
+                    <td>2m ago</td>
+                  </tr>
+                  <tr>
+                    <td>AL-00981</td>
+                    <td>#982339</td>
+                    <td>71</td>
+                    <td>High-risk merchant</td>
+                    <td><span class="status-pill review">In review</span></td>
+                    <td>Prevail A.</td>
+                    <td>7m ago</td>
+                  </tr>
+                  <tr>
+                    <td>AL-00977</td>
+                    <td>#982320</td>
+                    <td>88</td>
+                    <td>Multiple declines</td>
+                    <td><span class="status-pill allow">Resolved</span></td>
+                    <td>Analyst queue</td>
+                    <td>24m ago</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <div class="detail-title">Alert detail</div>
+                <div class="detail-meta">Case record linked to a single transaction.</div>
+              </div>
+              <span class="badge badge--danger">Critical · Open</span>
+            </div>
+
+            <div class="detail-grid">
+              <div>
+                <div class="detail-item-label">Alert ID</div>
+                <div class="detail-item-value">AL-00982</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Transaction ID</div>
+                <div class="detail-item-value">#982341</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Risk score</div>
+                <div class="detail-item-value">92</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Category</div>
+                <div class="detail-item-value">Velocity spike</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Status</div>
+                <div class="detail-item-value">Open</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Assignee</div>
+                <div class="detail-item-value">Unassigned</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="tiny-label">Notes</div>
+            <p class="muted">
+              Add analyst notes, outcome, and any supporting evidence about customer or merchant behaviour.
+            </p>
+            <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+              <button class="btn btn-primary">Assign to me</button>
+              <button class="btn btn-ghost">Change status</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- RULES -->
+      <section class="section" id="section-rules">
+        <div class="section-header-line">
+          <div>
+            <div class="section-title">Rules Engine</div>
+            <div class="section-subtitle">
+              Manage human-written fraud rules: versions, severity, and actions.
+            </div>
+          </div>
+          <button class="btn btn-primary">Create new rule</button>
+        </div>
+
+        <div class="grid grid-main-sidebar">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Rule library</div>
+                <div class="card-subtitle">
+                  Active rules are evaluated on each transaction.
+                </div>
+              </div>
+              <span class="badge">Versioned</span>
+            </div>
+
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Version</th>
+                    <th>Severity</th>
+                    <th>Action</th>
+                    <th>Status</th>
+                    <th>Score +</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Large CNP at night</td>
+                    <td>3</td>
+                    <td><span class="tag severity-high">High</span></td>
+                    <td>Block</td>
+                    <td>Active</td>
+                    <td>+40</td>
+                  </tr>
+                  <tr>
+                    <td>24h velocity &gt; 20</td>
+                    <td>1</td>
+                    <td><span class="tag severity-medium">Medium</span></td>
+                    <td>Review</td>
+                    <td>Active</td>
+                    <td>+35</td>
+                  </tr>
+                  <tr>
+                    <td>New device &amp; high amount</td>
+                    <td>2</td>
+                    <td><span class="tag severity-high">High</span></td>
+                    <td>Review</td>
+                    <td>Active</td>
+                    <td>+30</td>
+                  </tr>
+                  <tr>
+                    <td>Block sanctioned countries</td>
+                    <td>5</td>
+                    <td><span class="tag severity-high">Critical</span></td>
+                    <td>Block</td>
+                    <td>Active</td>
+                    <td>+80</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <div class="detail-title">Rule detail</div>
+                <div class="detail-meta">
+                  condition_json rendered into human-readable logic.
+                </div>
+              </div>
+              <span class="badge badge--warning">Awaiting approval</span>
+            </div>
+
+            <div class="detail-grid">
+              <div>
+                <div class="detail-item-label">Rule name</div>
+                <div class="detail-item-value">Large CNP at night</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Version</div>
+                <div class="detail-item-value">3</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Severity</div>
+                <div class="detail-item-value">High</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Action</div>
+                <div class="detail-item-value">Block</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Created by</div>
+                <div class="detail-item-value">prevail@company.com</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Approved by</div>
+                <div class="detail-item-value">Pending</div>
+              </div>
+            </div>
+
+            <div class="divider"></div>
+            <div class="tiny-label">Condition (from condition_json)</div>
+            <div class="rule-condition">
+              IF <span class="field">channel</span>
+              <span class="op">==</span>
+              <span class="value">"card_not_present"</span>
+              AND
+              <span class="field">amount</span>
+              <span class="op">&gt;</span>
+              <span class="value">500000</span>
+              AND
+              <span class="field">timestamp.hour</span>
+              <span class="op">IN</span>
+              <span class="value">[22, 23, 0, 1, 2, 3]</span>
+            </div>
+            <p class="muted" style="margin-top:4px;">
+              In Xano you’ll parse <code>condition_json</code> and feed it into the rule engine.
+            </p>
+
+            <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+              <button class="btn btn-primary">Approve rule</button>
+              <button class="btn btn-danger">Disable rule</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AI PROPOSALS -->
+      <section class="section" id="section-ai-proposals">
+        <div class="section-header-line">
+          <div>
+            <div class="section-title">AI Proposals (Gemini)</div>
+            <div class="section-subtitle">
+              Rule ideas suggested by Gemini, stored in Ai_proposals.
+            </div>
+          </div>
+          <button class="btn btn-primary">Trigger AI on sample</button>
+        </div>
+
+        <div class="grid grid-main-sidebar">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Proposed rules</div>
+                <div class="card-subtitle">
+                  Each proposal has an explanation, confidence, and rule JSON.
+                </div>
+              </div>
+              <span class="badge badge-confidence">Gemini v1.5</span>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Confidence</th>
+                    <th>Severity</th>
+                    <th>Status</th>
+                    <th>Proposed</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Rapid micro-charges on new device</td>
+                    <td>0.91</td>
+                    <td><span class="tag severity-high">High</span></td>
+                    <td>Pending</td>
+                    <td>2025-12-12 21:25</td>
+                  </tr>
+                  <tr>
+                    <td>Unusual cross-border reversals</td>
+                    <td>0.83</td>
+                    <td><span class="tag severity-medium">Medium</span></td>
+                    <td>Rejected</td>
+                    <td>2025-12-12 19:10</td>
+                  </tr>
+                  <tr>
+                    <td>Low-value test charges</td>
+                    <td>0.88</td>
+                    <td><span class="tag severity-low">Low</span></td>
+                    <td>Approved</td>
+                    <td>2025-12-12 16:42</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <div class="detail-title">Proposal detail</div>
+                <div class="detail-meta">
+                  Maps to Ai_proposals.input_context_json and proposed_rule_json.
+                </div>
+              </div>
+              <span class="badge badge-confidence">Confidence 0.91</span>
+            </div>
+
+            <div class="tiny-label">Explanation</div>
+            <p class="muted">
+              "Detected a pattern where compromised cards are tested with multiple small charges from the same
+              device within a short window, usually followed by a single high-value fraud attempt."
+            </p>
+
+            <div class="divider"></div>
+            <div class="tiny-label">Proposed condition_json</div>
+            <div class="rule-condition">
+              IF <span class="field">features.1h.txn_count</span>
+              <span class="op">&gt;</span>
+              <span class="value">10</span>
+              AND
+              <span class="field">amount</span>
+              <span class="op">&lt;</span>
+              <span class="value">5000</span>
+              AND
+              <span class="field">device_id</span>
+              <span class="op">contains</span>
+              <span class="value">"new_device"</span>
+            </div>
+
+            <div class="divider"></div>
+            <div class="tiny-label">Input context (truncated)</div>
+            <div class="json-viewer">
+              <span class="json-key">{"sample_transactions"</span>: [
+              {<span class="json-key">"amount"</span>: <span class="json-number">199</span>, <span class="json-key">"channel"</span>: <span class="json-string">"online"</span>},
+              {<span class="json-key">"amount"</span>: <span class="json-number">249</span>, <span class="json-key">"channel"</span>: <span class="json-string">"online"</span>}
+              ],
+              <span class="json-key">"features"</span>: {<span class="json-key">"1h.txn_count"</span>: <span class="json-number">12</span>}
+              }
+            </div>
+
+            <div style="margin-top:6px; display:flex; gap:6px; flex-wrap:wrap;">
+              <button class="btn btn-primary">Approve & publish</button>
+              <button class="btn btn-danger">Reject</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACCOUNTS -->
+      <section class="section" id="section-accounts">
+        <div class="section-header-line">
+          <div>
+            <div class="section-title">Accounts</div>
+            <div class="section-subtitle">
+              Customer accounts from the Accounts table, enriched with Features and Alerts.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-main-sidebar">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Accounts list</div>
+                <div class="card-subtitle">Filter by status and risk tier.</div>
+              </div>
+            </div>
+            <div class="filters">
+              <div class="filter-control">
+                <label class="filter-label">Status</label>
+                <select class="filter-select">
+                  <option>Any</option>
+                  <option>Active</option>
+                  <option>Suspended</option>
+                  <option>Closed</option>
+                </select>
+              </div>
+              <div class="filter-control">
+                <label class="filter-label">Risk tier</label>
+                <select class="filter-select">
+                  <option>Any</option>
+                  <option>Low</option>
+                  <option>Medium</option>
+                  <option>High</option>
+                  <option>Critical</option>
+                </select>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Account ID</th>
+                    <th>Customer ref</th>
+                    <th>Status</th>
+                    <th>Risk tier</th>
+                    <th>Open alerts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>ACC-8842</td>
+                    <td>CUST-8842</td>
+                    <td>Active</td>
+                    <td>High</td>
+                    <td>3</td>
+                  </tr>
+                  <tr>
+                    <td>ACC-4311</td>
+                    <td>CUST-4311</td>
+                    <td>Active</td>
+                    <td>Medium</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>ACC-1509</td>
+                    <td>CUST-1509</td>
+                    <td>Suspended</td>
+                    <td>Critical</td>
+                    <td>5</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <div class="detail-title">Account detail</div>
+                <div class="detail-meta">
+                  Linked to Transactions, Devices, Features, and Alerts.
+                </div>
+              </div>
+              <span class="badge badge--danger">Risk tier · High</span>
+            </div>
+            <div class="detail-grid">
+              <div>
+                <div class="detail-item-label">Account ID</div>
+                <div class="detail-item-value">ACC-8842</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Customer ref</div>
+                <div class="detail-item-value">CUST-8842</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Status</div>
+                <div class="detail-item-value">Active</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Risk tier</div>
+                <div class="detail-item-value">High</div>
+              </div>
+            </div>
+            <div class="divider"></div>
+            <div class="tiny-label">Recent features (velocity)</div>
+            <p class="muted">
+              Aggregated data from the Features table, recomputed asynchronously.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- MERCHANTS -->
+      <section class="section" id="section-merchants">
+        <div class="section-header-line">
+          <div>
+            <div class="section-title">Merchants</div>
+            <div class="section-subtitle">
+              Counterparty data from the Merchants table (MCC, country, risk_score).
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-main-sidebar">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Merchants list</div>
+                <div class="card-subtitle">Sort by risk and activity.</div>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Merchant</th>
+                    <th>MCC</th>
+                    <th>Country</th>
+                    <th>Risk score</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>FOODPANDA-NG</td>
+                    <td>5812</td>
+                    <td>NG</td>
+                    <td>74</td>
+                  </tr>
+                  <tr>
+                    <td>UBER-NG</td>
+                    <td>4121</td>
+                    <td>NG</td>
+                    <td>38</td>
+                  </tr>
+                  <tr>
+                    <td>APPLE.COM/BILL</td>
+                    <td>5732</td>
+                    <td>US</td>
+                    <td>42</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <div class="detail-title">Merchant detail</div>
+                <div class="detail-meta">Show transactions and aggregated risk.</div>
+              </div>
+              <span class="badge">Counterparty risk</span>
+            </div>
+            <p class="muted">
+              Use this to track merchants with rising fraud patterns, high dispute rates, or unusual chargebacks.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- DEVICES -->
+      <section class="section" id="section-devices">
+        <div class="section-header-line">
+          <div>
+            <div class="section-title">Devices</div>
+            <div class="section-subtitle">
+              Device fingerprints from Devices table, mapped to customers and transactions.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-main-sidebar">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Devices list</div>
+                <div class="card-subtitle">Link devices to suspicious behaviour.</div>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Device hash</th>
+                    <th>Customer ref</th>
+                    <th>Last seen</th>
+                    <th>Distinct accounts</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>device_hash_9af0...</td>
+                    <td>CUST-8842</td>
+                    <td>2025-12-12 21:31</td>
+                    <td>1</td>
+                  </tr>
+                  <tr>
+                    <td>device_hash_f41c...</td>
+                    <td>CUST-1509</td>
+                    <td>2025-12-12 21:12</td>
+                    <td>3</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <div class="detail-title">Device detail</div>
+                <div class="detail-meta">
+                  Map to all accounts and transactions using this device.
+                </div>
+              </div>
+              <span class="badge">Device intelligence</span>
+            </div>
+            <p class="muted">
+              Shared devices across high-risk accounts are often a strong fraud signal; surface them here.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- USERS -->
+      <section class="section" id="section-users">
+        <div class="section-header-line">
+          <div>
+            <div class="section-title">Users (Analysts)</div>
+            <div class="section-subtitle">
+              Backed by the Users table — controls roles and alert assignments.
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-main-sidebar">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Users list</div>
+                <div class="card-subtitle">Analysts, admins and system users.</div>
+              </div>
+            </div>
+            <div class="table-wrapper">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Name</th>
+                    <th>Email</th>
+                    <th>Roles</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>Prevail A.</td>
+                    <td>prevail@company.com</td>
+                    <td>Analyst, Rule Approver</td>
+                    <td>Active</td>
+                  </tr>
+                  <tr>
+                    <td>Risk Ops Bot</td>
+                    <td>risk-bot@company.com</td>
+                    <td>System</td>
+                    <td>Active</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div class="detail-panel">
+            <div class="detail-header">
+              <div>
+                <div class="detail-title">User detail</div>
+                <div class="detail-meta">
+                  Show alerts assigned, rules created/approved, and activity.
+                </div>
+              </div>
+              <span class="badge">Access control</span>
+            </div>
+            <p class="muted">
+              Connects directly to <code>created_by</code>, <code>approved_by</code>, and
+              <code>assignee</code> fields in your schema.
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <!-- SETTINGS -->
+      <section class="section" id="section-settings">
+        <div class="section-header-line">
+          <div>
+            <div class="section-title">Settings</div>
+            <div class="section-subtitle">
+              Thresholds, actions, and integration configs (Xano & Gemini).
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-2">
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">Risk thresholds</div>
+                <div class="card-subtitle">
+                  Maps to decision logic in POST /transactions.
+                </div>
+              </div>
+            </div>
+            <div class="detail-grid">
+              <div>
+                <div class="detail-item-label">Allow &lt;=</div>
+                <div class="detail-item-value">&lt; 60</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Review range</div>
+                <div class="detail-item-value">60–84</div>
+              </div>
+              <div>
+                <div class="detail-item-label">Block &gt;=</div>
+                <div class="detail-item-value">&gt;= 85</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header">
+              <div>
+                <div class="card-title">AI integration (Gemini)</div>
+                <div class="card-subtitle">
+                  Mirrors your <code>ai_generate_rule</code> Xano function.
+                </div>
+              </div>
+              <span class="badge badge--ai">AI layer</span>
+            </div>
+            <p class="muted">
+              Configure API keys & endpoints in Xano. The UI only reflects status, last run, and logs.
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const navLinks = document.querySelectorAll(".nav-link");
+    const sections = {
+      dashboard: document.getElementById("section-dashboard"),
+      transactions: document.getElementById("section-transactions"),
+      alerts: document.getElementById("section-alerts"),
+      rules: document.getElementById("section-rules"),
+      "ai-proposals": document.getElementById("section-ai-proposals"),
+      accounts: document.getElementById("section-accounts"),
+      merchants: document.getElementById("section-merchants"),
+      devices: document.getElementById("section-devices"),
+      users: document.getElementById("section-users"),
+      settings: document.getElementById("section-settings")
+    };
+
+    const pageTitle = document.getElementById("page-title");
+    const breadcrumbsRoot = document.getElementById("breadcrumbs-root");
+
+    const titles = {
+      dashboard: "Overview",
+      transactions: "Transactions",
+      alerts: "Alerts & Case Management",
+      rules: "Rules Engine",
+      "ai-proposals": "AI Proposals (Gemini)",
+      accounts: "Accounts",
+      merchants: "Merchants",
+      devices: "Devices",
+      users: "Users",
+      settings: "Settings"
+    };
+
+    navLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        const target = link.getAttribute("data-section");
+
+        navLinks.forEach((l) => l.classList.remove("active"));
+        link.classList.add("active");
+
+        Object.keys(sections).forEach((key) => {
+          if (sections[key]) {
+            sections[key].classList.toggle("active", key === target);
+          }
+        });
+
+        if (titles[target]) {
+          pageTitle.textContent = titles[target];
+          breadcrumbsRoot.textContent = titles[target];
+        }
+      });
+    });
+  </script>
+</body>
+</html>
